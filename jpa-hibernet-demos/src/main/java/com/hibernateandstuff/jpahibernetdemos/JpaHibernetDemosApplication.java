@@ -7,6 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+
 @SpringBootApplication
 public class JpaHibernetDemosApplication {
 
@@ -18,9 +20,39 @@ public class JpaHibernetDemosApplication {
     public CommandLineRunner commandLineRunner(StudentDAO studentDAO) {
         return runner -> {
             // createStudent(studentDAO);
-            //createMultipleStudents(studentDAO);
-            readStudent(studentDAO);
+            // createMultipleStudents(studentDAO);
+            // readStudent(studentDAO);
+            // queryForStudents(studentDAO); // konsola bastırmak için
+            // printSameLastNameStudentsStream(studentDAO);
+            printSameLastNameStudentsQuery(studentDAO);
         };
+    }
+
+    private void printSameLastNameStudentsQuery(StudentDAO studentDAO) {
+        // get a list of students
+        List<Student> students = studentDAO.findByLastName("genc");
+
+        // display of students
+        students.stream().
+                forEach(student -> System.out.println(student));
+    }
+
+    private void printSameLastNameStudentsStream(StudentDAO studentDAO) {
+        System.out.println();
+        studentDAO.findAll().stream().
+                filter(student -> student.getLastName().equals("genc"))
+                .forEach(student -> System.out.println(student));
+    }
+
+    private void queryForStudents(StudentDAO studentDAO) {
+        //get a list of students
+        List<Student> students = studentDAO.findAll();
+
+        // display of students
+        studentDAO.findAll().stream().
+                forEach(student -> System.out.println(student));
+
+        // students.forEach(System.out::println); ileride böyle yapcan herhalde
     }
 
     private void readStudent(StudentDAO studentDAO) {
@@ -39,23 +71,25 @@ public class JpaHibernetDemosApplication {
 
     private void createMultipleStudents(StudentDAO studentDAO) {
         // create multiple students
-        System.out.println("creating 3 new student objects...");
-        Student tempStudent = new Student("berkeg", "genc", "berke.44@gmail.com");
-        Student tempStudent1 = new Student("elif", "genc", "terminal@gmail.com");
-        Student tempStudent2 = new Student("bonita", "duran", "bonitaninmaeili@gmail.com");
+        System.out.println("creating 4 new student objects...");
+        Student tempStudent = new Student("berke", "genc", "gnc.berke.44@gmail.com");
+        Student tempStudent1 = new Student("elif", "genc", "deneme@gmail.com");
+        Student tempStudent2 = new Student("faik", "duran", "faikmail@gmail.com");
+        Student tempStudent3 = new Student("daim", "duran", "daimmail@gmail.com");
 
         // save students
         System.out.println("saving the student...");
         studentDAO.save(tempStudent);
         studentDAO.save(tempStudent1);
         studentDAO.save(tempStudent2);
+        studentDAO.save(tempStudent3);
     }
 
     private Student createStudent(StudentDAO studentDAO) {
 
         // create the student object
         System.out.println("creating new student object...");
-        Student tempStudent = new Student("berke", "genç", "gnc.berke.44@gmail.com");
+        Student tempStudent = new Student("tarhan", "cenk", "tarhan@gmail.com");
 
         // save the student object
         System.out.println("saving the student...");
