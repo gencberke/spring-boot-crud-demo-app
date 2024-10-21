@@ -20,12 +20,60 @@ public class JpaHibernetDemosApplication {
     public CommandLineRunner commandLineRunner(StudentDAO studentDAO) {
         return runner -> {
             // createStudent(studentDAO);
-            // createMultipleStudents(studentDAO);
+
+            createMultipleStudents(studentDAO);
+
             // readStudent(studentDAO);
+
             // queryForStudents(studentDAO); // konsola bastırmak için
+
             // printSameLastNameStudentsStream(studentDAO);
-            printSameLastNameStudentsQuery(studentDAO);
+
+            // printSameLastNameStudentsQuery(studentDAO);
+
+            // updateStudent(studentDAO);
+
+            // updateMultipleStudents(studentDAO);
+
+            // deleteStudent(studentDAO);
+
+            // deleteAllStudents(studentDAO);
+
         };
+    }
+
+    private void deleteAllStudents(StudentDAO studentDAO) {
+        System.out.println("deleting all students...");
+        int deletedRows = studentDAO.deleteAll();
+        System.out.println("deleted " + deletedRows + " user");
+    }
+
+    private void deleteStudent(StudentDAO studentDAO) {
+        int studentId = 1;
+        System.out.println("deleting student id: " + studentId);
+        studentDAO.delete(studentId);
+    }
+
+    private void updateMultipleStudents(StudentDAO studentDAO) {
+        System.out.println("updating all students...");
+        studentDAO.updateMultipleStudents();
+    }
+
+    private void updateStudent(StudentDAO studentDAO) {
+        // retrieve student based on the id: primary key
+        int studentId = 1;
+        System.out.println("getting student with id:" + studentId);
+        Student myStudent = studentDAO.findById(studentId);
+
+        // change first name to ...
+        System.out.println("updating...");
+        myStudent.setFirstName("tarhan");
+
+        // update the student
+        studentDAO.update(myStudent);
+
+        // display of it
+        System.out.println("updated student " + myStudent);
     }
 
     private void printSameLastNameStudentsQuery(StudentDAO studentDAO) {
